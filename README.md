@@ -17,7 +17,7 @@ Este projeto configura o **NodeBB** com **Redis** e **MongoDB** usando Docker e 
 1. Clone este repositório:
 
 ```bash
-git clone https://seu-repositorio.git
+git clone [https://seu-repositorio.git](https://github.com/byBiel/nodebb-docker)
 cd nodebb-docker 
 ```
 2. Configure as variáveis de ambiente:
