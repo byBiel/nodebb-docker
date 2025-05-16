@@ -1,0 +1,18 @@
+# Ignore arquivos de ambiente e segredos
+.env
+.env.local
+.env.*.local
+
+# Ignore volumes e dados persistentes Docker (se estiverem na pasta do projeto)
+mongo-data/
+redis-data/
+nodebb-data/
+
+# Ignore logs
+*.log
+
+# VSCode settings
+.vscode/
+
+# Windows
+Thumbs.db

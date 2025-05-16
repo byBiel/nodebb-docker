@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  nodebb:
+    image: ghcr.io/nodebb/nodebb:latest
+    container_name: nodebb
+    restart: unless-stopped
+    ports:
+      - '4567:4567'
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - nodebb-data:/usr/src/app/public/uploads
+    depends_on:
+      - redis
+      - mongodb
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: redis
+    restart: unless-stopped
+    command: ['redis-server', '--appendonly', 'yes']
+    volumes:
+      - redis-data:/data
+
+  mongodb:
+    image: mongo:6
+    container_name: mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASS}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  nodebb-data:
+  redis-data:
+  mongo-data:
