@@ -30,7 +30,7 @@ cp .env.example .env
 3. Suba os containers:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 
@@ -52,7 +52,7 @@ Após subir os containers e acessar o fórum pela primeira vez, siga estes passo
 
 | Campo           | Valor            |
 |-----------------|------------------|
-| Host            | `mongodb`        |
+| Host            | `mongo`        |
 | Porta           | `27017`          |
 | Nome do banco   | `nodebb`         |
 | Usuário         | (definido no `.env`) |

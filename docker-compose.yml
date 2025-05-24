@@ -1,5 +1,4 @@
-version: '3.8'
-
+version: '3.9'
 services:
   nodebb:
     image: ghcr.io/nodebb/nodebb:latest
@@ -7,34 +6,40 @@ services:
     restart: unless-stopped
     ports:
       - '4567:4567'
-    environment:
-      - NODE_ENV=production
     volumes:
-      - nodebb-data:/usr/src/app/public/uploads
+      - nodebb-build:/usr/src/app/build
+      - nodebb-uploads:/usr/src/app/public/uploads
+      - nodebb-config:/opt/config
+      - ./install/docker/setup.json:/usr/src/app/setup.json
     depends_on:
       - redis
-      - mongodb
+      - mongo
 
   redis:
-    image: redis:7.2-alpine
-    container_name: redis
+    image: redis:latest
     restart: unless-stopped
-    command: ['redis-server', '--appendonly', 'yes']
+    container_name: redis
+    command: ['redis-server', '--appendonly', 'yes', '--loglevel', 'warning']
     volumes:
       - redis-data:/data
 
-  mongodb:
-    image: mongo:6
-    container_name: mongodb
+  mongo:
+    image: 'mongo:7-jammy'
     restart: unless-stopped
+    container_name: mongo
+    ports:
+      - '27017:27017'
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASS}
-      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+      MONGO_INITDB_ROOT_USERNAME: nodebb
+      MONGO_INITDB_ROOT_PASSWORD: nodebb
+      MONGO_INITDB_DATABASE: nodebb
     volumes:
       - mongo-data:/data/db
+      - ./install/docker/mongodb-user-init.js:/docker-entrypoint-initdb.d/user-init.js
 
 volumes:
-  nodebb-data:
-  redis-data:
   mongo-data:
+  redis-data:
+  nodebb-build:
+  nodebb-uploads:
+  nodebb-config:
